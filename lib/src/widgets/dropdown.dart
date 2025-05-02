@@ -20,6 +20,7 @@ class _Dropdown<T> extends StatelessWidget {
     this.itemBuilder,
     this.itemSeparator,
     this.singleSelect = false,
+    this.searchController,
   }) : super(key: key);
 
   /// The decoration of the dropdown.
@@ -64,6 +65,9 @@ class _Dropdown<T> extends StatelessWidget {
   /// The keyboard type of the search field.
   final TextInputType? searchKeyboardType;
 
+  /// The controller of the search field.
+  final TextEditingController? searchController;
+
   int get _selectedCount => items.where((element) => element.selected).length;
 
   static const Map<ShortcutActivator, Intent> _webShortcuts = <ShortcutActivator, Intent>{
@@ -104,6 +108,7 @@ class _Dropdown<T> extends StatelessWidget {
                   onChanged: _onSearchChange,
                   onTap: onSearchFieldTap,
                   keyboardType: searchKeyboardType,
+                  controller: searchController,
                 ),
               if (decoration.header != null) Flexible(child: decoration.header!),
               Flexible(
@@ -197,6 +202,7 @@ class _SearchField extends StatelessWidget {
     required this.onChanged,
     this.onTap,
     this.keyboardType,
+    this.controller,
   });
 
   final SearchFieldDecoration decoration;
@@ -206,6 +212,8 @@ class _SearchField extends StatelessWidget {
   final VoidCallback? onTap;
 
   final TextInputType? keyboardType;
+
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +228,7 @@ class _SearchField extends StatelessWidget {
           suffixIcon: decoration.searchIcon,
         ),
         onChanged: onChanged,
+        controller: controller,
         onTap: onTap,
         keyboardType: keyboardType,
       ),

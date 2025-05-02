@@ -108,6 +108,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.closeOnBackButton = false,
     this.searchKeyboardType,
     this.onSearchFieldTap,
+    this.searchController,
     Key? key,
   })  : future = null,
         super(key: key);
@@ -158,6 +159,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.closeOnBackButton = false,
     this.onSearchFieldTap,
     this.searchKeyboardType,
+    this.searchController,
     Key? key,
   })  : items = const [],
         super(key: key);
@@ -229,6 +231,9 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
 
   /// The keyboard type of the search field.
   final TextInputType? searchKeyboardType;
+
+  /// The controller of the search field.
+  final TextEditingController? searchController;
 
   /// Whether to close the dropdown when the back button is pressed.
   ///
@@ -442,6 +447,7 @@ class _MultiDropdownState<T extends Object> extends State<MultiDropdown<T>> {
                       onSearchChange: _dropdownController._setSearchQuery,
                       onSearchFieldTap: widget.onSearchFieldTap,
                       searchKeyboardType: widget.searchKeyboardType,
+                      searchController: widget.searchController,
                     ),
                   ),
                 ),

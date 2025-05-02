@@ -16,11 +16,11 @@ class _Dropdown<T> extends StatelessWidget {
     Key? key,
     this.onSearchFieldTap,
     this.searchKeyboardType,
+    this.searchController,
     this.onSearchChange,
     this.itemBuilder,
     this.itemSeparator,
     this.singleSelect = false,
-    this.searchController,
   }) : super(key: key);
 
   /// The decoration of the dropdown.

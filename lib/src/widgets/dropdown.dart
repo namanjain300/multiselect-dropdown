@@ -130,7 +130,7 @@ class _Dropdown<T> extends StatelessWidget {
                   child: Text(
                     'No items found',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium,
+                    style: searchTextStyle?.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
               if (decoration.footer != null) Flexible(child: decoration.footer!),

@@ -109,6 +109,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.searchKeyboardType,
     this.onSearchFieldTap,
     this.searchController,
+    this.searchTextStyle,
     Key? key,
   })  : future = null,
         super(key: key);
@@ -160,6 +161,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.onSearchFieldTap,
     this.searchKeyboardType,
     this.searchController,
+    this.searchTextStyle,
     Key? key,
   })  : items = const [],
         super(key: key);
@@ -234,6 +236,9 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
 
   /// The controller of the search field.
   final TextEditingController? searchController;
+
+  /// The text style of the search field.
+  final TextStyle? searchTextStyle;
 
   /// Whether to close the dropdown when the back button is pressed.
   ///
@@ -448,6 +453,7 @@ class _MultiDropdownState<T extends Object> extends State<MultiDropdown<T>> {
                       onSearchFieldTap: widget.onSearchFieldTap,
                       searchKeyboardType: widget.searchKeyboardType,
                       searchController: widget.searchController,
+                      searchTextStyle: widget.searchTextStyle,
                     ),
                   ),
                 ),
@@ -576,7 +582,7 @@ class _MultiDropdownState<T extends Object> extends State<MultiDropdown<T>> {
     final selectedOptions = _dropdownController.selectedItems;
 
     if (widget.singleSelect) {
-      return Text(selectedOptions.first.label);
+      return Text(selectedOptions.first.label, style: widget.fieldDecoration.labelStyle);
     }
 
     return _buildSelectedItems(selectedOptions);

@@ -13,6 +13,10 @@ class _Dropdown<T> extends StatelessWidget {
     required this.maxSelections,
     required this.items,
     required this.onItemTap,
+    required this.searchOnReturnClicked,
+    required this.searchReadOnly,
+    required this.searchShowCursor,
+    required this.searchMaxLengthEnforcement,
     Key? key,
     this.onSearchFieldTap,
     this.searchKeyboardType,
@@ -72,6 +76,19 @@ class _Dropdown<T> extends StatelessWidget {
   /// The text style of the search field.
   final TextStyle? searchTextStyle;
 
+  /// The callback when the return key is clicked.
+  final dynamic Function()? searchOnReturnClicked;
+
+  /// The read only of the search field.
+  final bool searchReadOnly;
+
+  /// The show cursor of the search field.
+  final bool searchShowCursor;
+
+  /// The max length enforcement of the search field.
+  final MaxLengthEnforcement? searchMaxLengthEnforcement;
+
+  /// The max length enforcement of the search field.
   int get _selectedCount => items.where((element) => element.selected).length;
 
   static const Map<ShortcutActivator, Intent> _webShortcuts = <ShortcutActivator, Intent>{
@@ -114,6 +131,10 @@ class _Dropdown<T> extends StatelessWidget {
                   keyboardType: searchKeyboardType,
                   controller: searchController,
                   textStyle: searchTextStyle,
+                  onReturnClicked: searchOnReturnClicked,
+                  readOnly: searchReadOnly,
+                  showCursor: searchShowCursor,
+                  maxLengthEnforcement: searchMaxLengthEnforcement,
                 ),
               if (decoration.header != null) Flexible(child: decoration.header!),
               Flexible(
@@ -209,6 +230,10 @@ class _SearchField extends StatelessWidget {
     this.keyboardType,
     this.controller,
     this.textStyle,
+    this.onReturnClicked,
+    this.readOnly = false,
+    this.showCursor = true,
+    this.maxLengthEnforcement,
   });
 
   final SearchFieldDecoration decoration;
@@ -222,6 +247,14 @@ class _SearchField extends StatelessWidget {
   final TextEditingController? controller;
 
   final TextStyle? textStyle;
+
+  final dynamic Function()? onReturnClicked;
+
+  final bool readOnly;
+
+  final bool showCursor;
+
+  final MaxLengthEnforcement? maxLengthEnforcement;
 
   @override
   Widget build(BuildContext context) {
@@ -242,6 +275,9 @@ class _SearchField extends StatelessWidget {
         onTap: onTap,
         keyboardType: keyboardType,
         style: textStyle,
+        readOnly: readOnly,
+        showCursor: showCursor,
+        maxLengthEnforcement: maxLengthEnforcement,
       ),
     );
   }

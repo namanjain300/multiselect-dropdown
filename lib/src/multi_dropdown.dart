@@ -110,6 +110,10 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.onSearchFieldTap,
     this.searchController,
     this.searchTextStyle,
+    this.searchOnReturnClicked,
+    this.searchReadOnly = false,
+    this.searchShowCursor = true,
+    this.searchMaxLengthEnforcement,
     Key? key,
   })  : future = null,
         super(key: key);
@@ -162,6 +166,10 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.searchKeyboardType,
     this.searchController,
     this.searchTextStyle,
+    this.searchOnReturnClicked,
+    this.searchReadOnly = false,
+    this.searchShowCursor = true,
+    this.searchMaxLengthEnforcement,
     Key? key,
   })  : items = const [],
         super(key: key);
@@ -244,6 +252,18 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
   ///
   /// Note: This option requires the app to have a router, such as MaterialApp.router, in order to work properly.
   final bool closeOnBackButton;
+
+  /// The callback when the return key is clicked.
+  final dynamic Function()? searchOnReturnClicked;
+
+  /// The read only of the search field.
+  final bool searchReadOnly;
+
+  /// The show cursor of the search field.
+  final bool searchShowCursor;
+
+  /// The max length enforcement of the search field.
+  final MaxLengthEnforcement? searchMaxLengthEnforcement;
 
   @override
   State<MultiDropdown<T>> createState() => _MultiDropdownState<T>();
@@ -454,6 +474,10 @@ class _MultiDropdownState<T extends Object> extends State<MultiDropdown<T>> {
                       searchKeyboardType: widget.searchKeyboardType,
                       searchController: widget.searchController,
                       searchTextStyle: widget.searchTextStyle,
+                      searchOnReturnClicked: widget.searchOnReturnClicked,
+                      searchReadOnly: widget.searchReadOnly,
+                      searchShowCursor: widget.searchShowCursor,
+                      searchMaxLengthEnforcement: widget.searchMaxLengthEnforcement,
                     ),
                   ),
                 ),

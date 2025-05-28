@@ -260,10 +260,34 @@ class _SearchFieldState extends State<_SearchField> {
     super.initState();
     _focusNode = FocusNode();
     _controller = widget.controller ?? TextEditingController();
+
+    // Listen to controller changes
+    _controller.addListener(_handleControllerChange);
+  }
+
+  void _handleControllerChange() {
+    if (_controller.text != widget.onChanged) {
+      widget.onChanged(_controller.text);
+    }
+  }
+
+  @override
+  void didUpdateWidget(_SearchField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update controller if it changed externally
+    if (widget.controller != oldWidget.controller) {
+      _controller.removeListener(_handleControllerChange);
+      if (oldWidget.controller == null) {
+        _controller.dispose();
+      }
+      _controller = widget.controller ?? TextEditingController();
+      _controller.addListener(_handleControllerChange);
+    }
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_handleControllerChange);
     if (widget.controller == null) {
       _controller.dispose();
     }
@@ -287,7 +311,9 @@ class _SearchFieldState extends State<_SearchField> {
           suffixIconColor: widget.textStyle?.color,
           hintStyle: widget.textStyle?.copyWith(color: widget.textStyle?.color?.withOpacity(0.8)),
         ),
-        onChanged: widget.onChanged,
+        onChanged: (value) {
+          widget.onChanged(value);
+        },
         onTap: () {
           widget.onTap?.call();
           _focusNode.requestFocus();
@@ -298,6 +324,9 @@ class _SearchFieldState extends State<_SearchField> {
         showCursor: widget.showCursor,
         maxLengthEnforcement: widget.maxLengthEnforcement,
         onSubmitted: (_) => widget.onReturnClicked?.call(),
+        // Add these properties to better handle external input
+        enableInteractiveSelection: true,
+        autocorrect: false,
       ),
     );
   }

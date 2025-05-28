@@ -208,17 +208,21 @@ class MultiSelectController<T> extends ChangeNotifier {
     if (_searchQuery == query) return;
 
     _searchQuery = query;
-    if (_searchQuery.isEmpty) {
-      _filteredItems = List.from(_items);
-    } else {
-      _filteredItems = _items
-          .where(
-            (item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
-          )
-          .toList();
-    }
-    _onSearchChanged?.call(query);
-    notifyListeners();
+
+    // Debounce the filtering to avoid too frequent updates
+    Future.microtask(() {
+      if (_searchQuery.isEmpty) {
+        _filteredItems = List.from(_items);
+      } else {
+        _filteredItems = _items
+            .where(
+              (item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
+            )
+            .toList();
+      }
+      _onSearchChanged?.call(query);
+      notifyListeners();
+    });
   }
 
   // clears the search query.

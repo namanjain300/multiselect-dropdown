@@ -17,19 +17,16 @@ class MultiSelectController<T> extends ChangeNotifier {
   String _searchQuery = '';
 
   /// Gets the list of dropdown items.
-  List<DropdownItem<T>> get items =>
-      _searchQuery.isEmpty ? _items : _filteredItems;
+  List<DropdownItem<T>> get items => _searchQuery.isEmpty ? _items : _filteredItems;
 
   /// Gets the list of selected dropdown items.
-  List<DropdownItem<T>> get selectedItems =>
-      _items.where((element) => element.selected).toList();
+  List<DropdownItem<T>> get selectedItems => _items.where((element) => element.selected).toList();
 
   /// Get the list of selected dropdown item values.
   List<T> get _selectedValues => selectedItems.map((e) => e.value).toList();
 
   /// Gets the list of disabled dropdown items.
-  List<DropdownItem<T>> get disabledItems =>
-      _items.where((element) => element.disabled).toList();
+  List<DropdownItem<T>> get disabledItems => _items.where((element) => element.disabled).toList();
 
   bool _open = false;
 
@@ -80,8 +77,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void clearAll() {
     _items = _items
         .map(
-          (element) =>
-              element.selected ? element.copyWith(selected: false) : element,
+          (element) => element.selected ? element.copyWith(selected: false) : element,
         )
         .toList();
     notifyListeners();
@@ -92,8 +88,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void selectAll() {
     _items = _items
         .map(
-          (element) =>
-              !element.selected ? element.copyWith(selected: true) : element,
+          (element) => !element.selected ? element.copyWith(selected: true) : element,
         )
         .toList();
     notifyListeners();
@@ -117,16 +112,13 @@ class MultiSelectController<T> extends ChangeNotifier {
   void toggleWhere(bool Function(DropdownItem<T> item) predicate) {
     _items = _items
         .map(
-          (element) => predicate(element)
-              ? element.copyWith(selected: !element.selected)
-              : element,
+          (element) => predicate(element) ? element.copyWith(selected: !element.selected) : element,
         )
         .toList();
     if (_searchQuery.isNotEmpty) {
       _filteredItems = _items
           .where(
-            (item) =>
-                item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
+            (item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
           )
           .toList();
     }
@@ -140,9 +132,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void selectWhere(bool Function(DropdownItem<T> item) predicate) {
     _items = _items
         .map(
-          (element) => predicate(element) && !element.selected
-              ? element.copyWith(selected: true)
-              : element,
+          (element) => predicate(element) && !element.selected ? element.copyWith(selected: true) : element,
         )
         .toList();
     notifyListeners();
@@ -152,9 +142,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void _toggleOnly(DropdownItem<T> item) {
     _items = _items
         .map(
-          (element) => element == item
-              ? element.copyWith(selected: !element.selected)
-              : element.copyWith(selected: false),
+          (element) => element == item ? element.copyWith(selected: !element.selected) : element.copyWith(selected: false),
         )
         .toList();
 
@@ -168,9 +156,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void unselectWhere(bool Function(DropdownItem<T> item) predicate) {
     _items = _items
         .map(
-          (element) => predicate(element) && element.selected
-              ? element.copyWith(selected: false)
-              : element,
+          (element) => predicate(element) && element.selected ? element.copyWith(selected: false) : element,
         )
         .toList();
     notifyListeners();
@@ -183,9 +169,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   void disableWhere(bool Function(DropdownItem<T> item) predicate) {
     _items = _items
         .map(
-          (element) => predicate(element) && !element.disabled
-              ? element.copyWith(disabled: true)
-              : element,
+          (element) => predicate(element) && !element.disabled ? element.copyWith(disabled: true) : element,
         )
         .toList();
     notifyListeners();
@@ -221,14 +205,15 @@ class MultiSelectController<T> extends ChangeNotifier {
   // sets the search query.
   // The [query] parameter is the search query.
   void _setSearchQuery(String query) {
+    if (_searchQuery == query) return;
+
     _searchQuery = query;
     if (_searchQuery.isEmpty) {
       _filteredItems = List.from(_items);
     } else {
       _filteredItems = _items
           .where(
-            (item) =>
-                item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
+            (item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase()),
           )
           .toList();
     }
@@ -258,9 +243,7 @@ class MultiSelectController<T> extends ChangeNotifier {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is MultiSelectController<T> &&
-        listEquals(other._items, _items) &&
-        other._open == _open;
+    return other is MultiSelectController<T> && listEquals(other._items, _items) && other._open == _open;
   }
 
   @override

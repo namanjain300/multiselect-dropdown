@@ -222,7 +222,7 @@ class _Dropdown<T> extends StatelessWidget {
   }
 }
 
-class _SearchField extends StatelessWidget {
+class _SearchField extends StatefulWidget {
   const _SearchField({
     required this.decoration,
     required this.onChanged,
@@ -237,47 +237,67 @@ class _SearchField extends StatelessWidget {
   });
 
   final SearchFieldDecoration decoration;
-
   final ValueChanged<String> onChanged;
-
   final VoidCallback? onTap;
-
   final TextInputType? keyboardType;
-
   final TextEditingController? controller;
-
   final TextStyle? textStyle;
-
   final dynamic Function()? onReturnClicked;
-
   final bool readOnly;
-
   final bool showCursor;
-
   final MaxLengthEnforcement? maxLengthEnforcement;
+
+  @override
+  State<_SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<_SearchField> {
+  late FocusNode _focusNode;
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _controller = widget.controller ?? TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: TextField(
+        focusNode: _focusNode,
+        controller: _controller,
         decoration: InputDecoration(
           isDense: true,
-          hintText: decoration.hintText,
-          border: decoration.border,
-          focusedBorder: decoration.focusedBorder,
-          suffixIcon: decoration.searchIcon,
-          suffixIconColor: textStyle?.color,
-          hintStyle: textStyle?.copyWith(color: textStyle?.color?.withOpacity(0.8)),
+          hintText: widget.decoration.hintText,
+          border: widget.decoration.border,
+          focusedBorder: widget.decoration.focusedBorder,
+          suffixIcon: widget.decoration.searchIcon,
+          suffixIconColor: widget.textStyle?.color,
+          hintStyle: widget.textStyle?.copyWith(color: widget.textStyle?.color?.withOpacity(0.8)),
         ),
-        onChanged: onChanged,
-        controller: controller,
-        onTap: onTap,
-        keyboardType: keyboardType,
-        style: textStyle,
-        readOnly: readOnly,
-        showCursor: showCursor,
-        maxLengthEnforcement: maxLengthEnforcement,
+        onChanged: widget.onChanged,
+        onTap: () {
+          widget.onTap?.call();
+          _focusNode.requestFocus();
+        },
+        keyboardType: widget.keyboardType,
+        style: widget.textStyle,
+        readOnly: widget.readOnly,
+        showCursor: widget.showCursor,
+        maxLengthEnforcement: widget.maxLengthEnforcement,
+        onSubmitted: (_) => widget.onReturnClicked?.call(),
       ),
     );
   }
